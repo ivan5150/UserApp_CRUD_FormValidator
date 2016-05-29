@@ -16,7 +16,9 @@ import java.util.ArrayList;
 @RequestMapping("/")
 public class ChatController {
 
-    public static final String CHAT_PAGE = "chatUser";
+    //public static final String ALL_USERS = "allUsers";
+    public static final String ALL_USERS = "addUser";
+    public static final String ADD_USER = "addUser";
     public static final String MESSAGES_FROM_ATTRIBUTE = "messageForm";
     public static final String MESSAGES_ATTRIBUTE = "messages";
     ArrayList<Message> list = new ArrayList<Message>();
@@ -32,13 +34,13 @@ public class ChatController {
     public String showChatPage(ModelMap model) {
         model.addAttribute(MESSAGES_FROM_ATTRIBUTE, new MessageForm());
         model.addAttribute(MESSAGES_ATTRIBUTE, list);
-        return CHAT_PAGE;
+        return ALL_USERS;
     }
 
     @RequestMapping(value = "/save/message", method = RequestMethod.POST)
     public String saveMessage(@Validated MessageForm messageForm, BindingResult binding, ModelMap model) {
         if (binding.hasErrors()) {
-            return CHAT_PAGE;
+            return ALL_USERS;
         }
         saveMessage(messageForm);
         return showChatPage(model);

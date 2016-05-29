@@ -5,6 +5,8 @@ public class User {
     private long id;
     private String firstName;
     private String lastName;
+    private int age;
+    private char sex;
 
     public User(long id, String firstName, String lastName) {
         this.id = id;
@@ -35,6 +37,23 @@ public class User {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+    /////////////////////////////////////
+
+    public void setAge(int age){
+        this.age = age;
+    }
+
+    public int getAge(){
+        return age;
+    }
+
+    public void setSex(char sex){
+        this.sex = sex;
+    }
+
+    public char getSex(){
+        return  sex;
+    }
 
     @Override
     public String toString() {
@@ -42,6 +61,8 @@ public class User {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", age='" + age + '\'' +
+                ", sex='" + sex + '\'' +
                 '}';
     }
 }
