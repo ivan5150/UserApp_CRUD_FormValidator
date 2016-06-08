@@ -15,8 +15,9 @@ import java.util.List;
 @Repository
 public class UserDaoJdbcImpl implements UserDao {
     public static final String COLUMN_ID = "id";
-    public static final String COLUMN_FIRST_NAME = "firstName";
-    public static final String COLUMN_LAST_NAME = "lastName";
+    public static final String COLUMN_NAME = "name";
+    public static final String COLUMN_AGE = "age";
+    public static final String COLUMN_SEX = "sex";
     public static final String SELECT_BY_ID_QUERY = "SELECT * FROM user WHERE id = ?";
     public static final String INSERT_USER = "INSERT INTO user (firstName, lastName) VALUES (?, ?)";
     public static final String SELECT_FROM_ALL_USER = "SELECT * FROM user";
@@ -37,9 +38,10 @@ public class UserDaoJdbcImpl implements UserDao {
             statement.setLong(1, id);
             try (ResultSet resultSet = statement.executeQuery();) {
                 while (resultSet.next()) {
-                    return new User(resultSet.getLong(COLUMN_ID),
-                            resultSet.getString(COLUMN_FIRST_NAME),
-                            resultSet.getString(COLUMN_LAST_NAME));
+                    return new User(resultSet.getString(COLUMN_ID),
+                            resultSet.getString(COLUMN_NAME),
+                            resultSet.getString(COLUMN_AGE),
+                            resultSet.getString( COLUMN_SEX));
 
                 }
             }
@@ -57,8 +59,8 @@ public class UserDaoJdbcImpl implements UserDao {
             try (ResultSet resultSet = statement.executeQuery(SELECT_FROM_ALL_USER);) {
                 while (resultSet.next()) {
                     user.add(new User(resultSet.getLong(COLUMN_ID),
-                            resultSet.getString(COLUMN_FIRST_NAME),
-                            resultSet.getString(COLUMN_LAST_NAME)));
+                            resultSet.getString(COLUMN_NAME),
+                            resultSet.getString( COLUMN_SEX)));
                 }
             }
         } catch (Exception e) {
@@ -71,8 +73,8 @@ public class UserDaoJdbcImpl implements UserDao {
     public void insert(User user) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_USER);) {
-            statement.setString(1, user.getFirstName());
-            statement.setString(2, user.getLastName());
+            statement.setString(1, user.getId());
+            statement.setString(2, user.getName());
             int i = statement.executeUpdate();
             if (i == 0) {
                 throw new DaoException("Table 'Purses' was not updated", null);
@@ -86,9 +88,10 @@ public class UserDaoJdbcImpl implements UserDao {
     public void update(User user) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATES_USER);) {
-            statement.setString(1, user.getFirstName());
-            statement.setString(2, user.getLastName());
-            statement.setLong(3, user.getId());
+            statement.setString(1, user.getId());
+            statement.setString(2, user.getName());
+            statement.setString(3, user.getAge());
+           // statement.setString(4, user.getSex());
             statement.executeUpdate();
         } catch (Exception e) {
             throw new DaoException(String.format("Method update(user: '%d') has throw an exception.", user), e);

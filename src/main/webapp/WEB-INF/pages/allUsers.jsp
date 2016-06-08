@@ -35,6 +35,8 @@
     <c:forEach items="${messages}" var="msg">
         ${msg.author} : ${msg.text}<br>
     </c:forEach>
+
+    <%--
     <h1>Chat Page</h1>
     <form:form method="post" action="/save/message" commandName="messageForm">
 
@@ -51,6 +53,14 @@
         <input class="btn btn-default btn-xs" type="submit" value="save">
         <a class="btn btn-default btn-xs" href="/" role="button">cancel</a>
     </form:form>
+
+    <input class="btn btn-default btn-xs" type="submit" value="add">
+    --%>
+
+
+
+    <p align="right"><a class="btn btn-info btn-xs" href="/add/user" role="button">add user</a></p>
+    <a class="btn btn-primary btn-xs" href="/add/user" role="button">Add User</a>
 </div>
 </body>
 </html>

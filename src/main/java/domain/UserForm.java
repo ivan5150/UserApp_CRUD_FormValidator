@@ -1,20 +1,17 @@
 package domain;
 
-public class User {
+public class UserForm {
 
     private String id;
     private String name;
     private String age;
     private String sex;
 
-    public User(String id, String name, String age, String sex) {
+    public UserForm(String id, String name, String age, String sex) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.sex = sex;
-    }
-
-    public User(long aLong, String string, String string1) {
     }
 
     public String getId() {
