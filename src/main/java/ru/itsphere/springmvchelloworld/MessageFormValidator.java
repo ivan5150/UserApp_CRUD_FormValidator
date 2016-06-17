@@ -1,8 +1,5 @@
 package ru.itsphere.springmvchelloworld;
 
-import domain.User;
-
-import domain.UserForm;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;

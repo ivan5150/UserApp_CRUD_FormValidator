@@ -2,26 +2,22 @@ package domain;
 
 public class User {
 
-    private String id;
+    private long id;
     private String name;
-    private String age;
-    private String sex;
+    private int age;
 
-    public User(String id, String name, String age, String sex) {
+    public User(long id, String name, int age) {
         this.id = id;
         this.name = name;
         this.age = age;
-        this.sex = sex;
     }
 
-    public User(long aLong, String string, String string1) {
-    }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -29,27 +25,16 @@ public class User {
         return name;
     }
 
-    public void setName(String firstName) {
+    public void setName(String name) {
         this.name = name;
     }
 
-
-    /////////////////////////////////////
-
-    public void setAge(String age){
-        this.age = age;
-    }
-
-    public String getAge(){
+    public int getAge() {
         return age;
     }
 
-    public void setSex(String sex){
-        this.sex = sex;
-    }
-
-    public String getSex(){
-        return  sex;
+    public void setAge(int age) {
+        this.age = age;
     }
 
     @Override
@@ -58,7 +43,6 @@ public class User {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", age='" + age + '\'' +
-                ", sex='" + sex + '\'' +
-                '}';
+                +'}';
     }
 }

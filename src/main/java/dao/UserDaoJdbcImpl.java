@@ -1,7 +1,5 @@
 package dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import domain.User;
 
 import javax.sql.DataSource;
@@ -12,36 +10,36 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
 public class UserDaoJdbcImpl implements UserDao {
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_AGE = "age";
-    public static final String COLUMN_SEX = "sex";
     public static final String SELECT_BY_ID_QUERY = "SELECT * FROM user WHERE id = ?";
     public static final String INSERT_USER = "INSERT INTO user (firstName, lastName) VALUES (?, ?)";
     public static final String SELECT_FROM_ALL_USER = "SELECT * FROM user";
     public static final String UPDATES_USER = "UPDATE user SET firstName = ?, lastName = ? WHERE id = ?";
     public static final String DELETE_USER = "DELETE FROM user WHERE id = ?";
 
-    @Autowired
-    private DataSource dataSource;
+    private ConnectionFactory connectionFactory;
 
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
+    //public void setDataSource(DataSource dataSource) {
+    //   this.dataSource = dataSource;
+    //}
+
+    public UserDaoJdbcImpl(ConnectionFactory connectionFactory) {
+        this.connectionFactory = connectionFactory;
     }
 
     @Override
     public User getById(long id) {
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID_QUERY);) {
             statement.setLong(1, id);
             try (ResultSet resultSet = statement.executeQuery();) {
                 while (resultSet.next()) {
-                    return new User(resultSet.getString(COLUMN_ID),
+                    return new User(resultSet.getLong(COLUMN_ID),
                             resultSet.getString(COLUMN_NAME),
-                            resultSet.getString(COLUMN_AGE),
-                            resultSet.getString( COLUMN_SEX));
+                            resultSet.getInt(COLUMN_AGE));
 
                 }
             }
@@ -54,13 +52,13 @@ public class UserDaoJdbcImpl implements UserDao {
     @Override
     public List<User> getAll() {
         List<User> user = new ArrayList<>();
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionFactory.getConnection();
              Statement statement = connection.createStatement();) {
             try (ResultSet resultSet = statement.executeQuery(SELECT_FROM_ALL_USER);) {
                 while (resultSet.next()) {
                     user.add(new User(resultSet.getLong(COLUMN_ID),
                             resultSet.getString(COLUMN_NAME),
-                            resultSet.getString( COLUMN_SEX)));
+                            resultSet.getInt( COLUMN_AGE)));
                 }
             }
         } catch (Exception e) {
@@ -71,9 +69,9 @@ public class UserDaoJdbcImpl implements UserDao {
 
     @Override
     public void insert(User user) {
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_USER);) {
-            statement.setString(1, user.getId());
+            statement.setLong(1, user.getId());
             statement.setString(2, user.getName());
             int i = statement.executeUpdate();
             if (i == 0) {
@@ -86,12 +84,11 @@ public class UserDaoJdbcImpl implements UserDao {
 
     @Override
     public void update(User user) {
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATES_USER);) {
-            statement.setString(1, user.getId());
+            statement.setLong(1, user.getId());
             statement.setString(2, user.getName());
-            statement.setString(3, user.getAge());
-           // statement.setString(4, user.getSex());
+            statement.setInt(3, user.getAge());
             statement.executeUpdate();
         } catch (Exception e) {
             throw new DaoException(String.format("Method update(user: '%d') has throw an exception.", user), e);
@@ -100,7 +97,7 @@ public class UserDaoJdbcImpl implements UserDao {
 
     @Override
     public void deleteById(long id) {
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_USER);) {
             statement.setLong(1, id);
             statement.executeUpdate();

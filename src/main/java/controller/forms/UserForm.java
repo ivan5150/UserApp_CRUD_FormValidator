@@ -1,17 +1,15 @@
-package domain;
+package controller.forms;
 
 public class UserForm {
 
     private String id;
     private String name;
     private String age;
-    private String sex;
 
-    public UserForm(String id, String name, String age, String sex) {
+    public UserForm(String id, String name, String age) {
         this.id = id;
         this.name = name;
         this.age = age;
-        this.sex = sex;
     }
 
     public String getId() {
@@ -30,23 +28,12 @@ public class UserForm {
         this.name = name;
     }
 
-
-    /////////////////////////////////////
-
-    public void setAge(String age){
-        this.age = age;
-    }
-
-    public String getAge(){
+    public String getAge() {
         return age;
     }
 
-    public void setSex(String sex){
-        this.sex = sex;
-    }
-
-    public String getSex(){
-        return  sex;
+    public void setAge(String age) {
+        this.age = age;
     }
 
     @Override
@@ -55,7 +42,6 @@ public class UserForm {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", age='" + age + '\'' +
-                ", sex='" + sex + '\'' +
-                '}';
+                +'}';
     }
 }
