@@ -21,7 +21,6 @@
             <th>ID</th>
             <th>Name</th>
             <th>Age</th>
-            <th>Sex</th>
             <td>
                 <p>
                     <a class="btn btn-default btn-xs" href="/delete/currency/${currency.id}" role="button">delete</a>

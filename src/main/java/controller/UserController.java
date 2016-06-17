@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import ru.itsphere.springmvchelloworld.Message;
 import ru.itsphere.springmvchelloworld.MessageForm;
 import ru.itsphere.springmvchelloworld.MessageFormValidator;
+import service.UserServiceImpl;
 
 import java.util.ArrayList;
 
@@ -23,7 +24,7 @@ public class UserController {
     //public static final String ALL_USERS = "allUsers";
     public static final String ALL_USERS = "addUser";
     public static final String ADD_USER = "addUser";
-    public static final String MESSAGES_FROM_ATTRIBUTE = "messageForm";
+    public static final String MESSAGES_FROM_ATTRIBUTE = "UserForm";
     public static final String MESSAGES_ATTRIBUTE = "messages";
 
 
@@ -37,9 +38,9 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String showChatPage(ModelMap model) {
-        model.addAttribute(MESSAGES_FROM_ATTRIBUTE, new MessageForm());
-        model.addAttribute(MESSAGES_ATTRIBUTE, list);
+    public String showAllUsersPage(ModelMap model) {
+        //model.addAttribute(MESSAGES_FROM_ATTRIBUTE, new MessageForm());
+        model.addAttribute(MESSAGES_ATTRIBUTE, new UserServiceImpl().getAll());
         return ALL_USERS;
     }
 
@@ -50,13 +51,14 @@ public class UserController {
     }
 
     @RequestMapping(value = "/save/message", method = RequestMethod.POST)
-    public String saveMessage(@Validated MessageForm messageForm, BindingResult binding, ModelMap model) {
-        if (binding.hasErrors()) {
+    public String saveMessage(@Validated MessageForm messageForm, ModelMap model) {
+        /*if (binding.hasErrors()) {
             return ALL_USERS;
-        }
+        }*/
         saveMessage(messageForm);
-        return showChatPage(model);
+        return showAllUsersPage(model);
     }
+
 
     private synchronized void saveMessage(MessageForm messageForm) {
         list.add(new Message(messageForm.getAuthor(), messageForm.getText()));
